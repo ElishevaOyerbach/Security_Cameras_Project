@@ -1,12 +1,12 @@
 import './App.css';
-import Home from './Components/Home';
+import AppManager from './Components/AppManager';
 
 
 function App() {
   return (
     <div className="App">
       <h1>App</h1>
-      <Home />
+        <AppManager/>
     </div>
   );
 }
