@@ -1,10 +1,11 @@
+
 const express = require("express")
 const router = express.Router()
-
-const { getAllSecurityCamerasByMember, getAllAnalysisSchemaByMember } = require("../Controllers/MembersController")
-
-router.get("/getAllSecurityCameras/:id", getAllSecurityCamerasByMember) // קבלת כל מצלמות האבטחה של עובד זה
-router.get("/getAllAnalysisSchema/:id", getAllAnalysisSchemaByMember) // קבלת כל הסכמות של עובד זה
+const {getAllSecurityCamerasByMember,getAllAnalysisSchemaByMember} = require("../Controllers/MembersController")
 
 
-module.exports = router
+router.get("/getAllSecurityCamerasByMember/:id",getAllSecurityCamerasByMember)
+router.get("/getAllAnalysisSchemaByMember/:id",getAllAnalysisSchemaByMember)
+
+
+module.exports = router   

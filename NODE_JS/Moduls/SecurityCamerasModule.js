@@ -1,9 +1,10 @@
 const mongoose = require("mongoose")
-
 const SecurityCamerasModule = mongoose.Schema({
-    IdSecurityCamera: { type: Number, required: true },
+
+    IDsecurityCamera: { type: Number, required: true },
     date: { type: Date, default: Date.now },
-    lenght: [{ type: Number}],
+    length: { type: Number }
+
 })
 
 module.exports = mongoose.model( "SecurityCameras",SecurityCamerasModule )

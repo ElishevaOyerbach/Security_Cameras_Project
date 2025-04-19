@@ -2,8 +2,8 @@ require('dotenv').config();
 const express =require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
-
 const mongoose = require("mongoose")
+const { createToken, verifyToken } = require("./Middleware/auth"); 
 
 const app = express()
 app.use(cors())
