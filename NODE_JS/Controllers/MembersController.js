@@ -1,8 +1,5 @@
-const Members = require('../Moduls/MembersModule'); // מודל העובדים
-const Administrators = require('../Moduls/AdministatorsModule'); // מודל המנהלים
-const SecurityCameras = require('../Moduls/SecurityCamerasModule'); // מודל מצלמות האבטחה
+const Members=require("../Moduls/MembersModule")
 
-//קבלת כל מצלמות האבטחה של עובד זה
 async function getAllSecurityCamerasByMember(req, res) {
     try {
         const { id } = req.params; // קבלת מזהה העובד מהפרמטרים של הבקשה
@@ -18,6 +15,7 @@ async function getAllSecurityCamerasByMember(req, res) {
     }
 }
 //קבלת כל הסכמות של עובד זה
+//קבלת כל הסכמות של עובד זה
 async function getAllAnalysisSchemaByMember(req, res) {
     try {
         const { id } = req.params; // קבלת מזהה העובד מהפרמטרים של הבקשה
@@ -32,4 +30,15 @@ async function getAllAnalysisSchemaByMember(req, res) {
         res.status(500).send("Failed to fetch analysis schema.");
     }
 }
-module.exports = {getAllSecurityCamerasByMember, getAllAnalysisSchemaByMember};
+
+
+// ייצוא הפונקציות שנוצרו
+module.exports={ getAllSecurityCamerasByMember,getAllAnalysisSchemaByMember}
+ 
+
+
+
+
+
+
+
