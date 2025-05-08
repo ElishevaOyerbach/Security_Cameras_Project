@@ -5,7 +5,7 @@ const SecurityCamerasModule = mongoose.Schema({
     IDsecurityCamera: { type: Number, required: true },
     date: { type: Date, default: Date.now },
     length: { type: Number },
-    filePath: { type: String },
+    filePath: { type: String }, 
     administartorID:{ type:String },     
 });
 
