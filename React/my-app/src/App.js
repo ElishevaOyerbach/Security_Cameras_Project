@@ -53,12 +53,14 @@ function AppContent() {
     </Routes>
   );
 }
-  
 function App() {
   return (
     <BrowserRouter>
       <AppContent />
-      <SighInAdministrator />
+
+
+
+
     </BrowserRouter>
   );
 }

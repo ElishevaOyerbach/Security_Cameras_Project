@@ -9,6 +9,7 @@ const UploadVideo = () => {
   const [error, setError] = useState(null);
 
   const admin = useSelector((state) => state.AdministratorSlice);
+  const user = useSelector((state) => state.UserSlice);
   const adminId = admin._id;
 
   const token = localStorage.getItem("token");
@@ -48,7 +49,7 @@ const UploadVideo = () => {
         }
       );
       alert('הסרטון הועלה בהצלחה!');
-      console.log(response.data);
+
     } catch (error) {
       console.error('שגיאה בהעלאת הסרטון:', error);
       alert('ההעלאה נכשלה.');
@@ -56,6 +57,11 @@ const UploadVideo = () => {
       setLoading(false);
     }
   };
+  const redCursor = `url("data:image/svg+xml;utf8,
+    <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>
+      <circle cx='16' cy='16' r='6' fill='red' />
+    </svg>
+  ") 16 16, auto`;
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-2 align-items-center mt-2">
@@ -72,15 +78,28 @@ const UploadVideo = () => {
           icon="pi pi-upload"
           className="p-button-outlined"
           type="button"
-          onClick={() => document.getElementById("upload-input").click()}
+          tooltip={user.role === "Member" ? 'אין לך הרשאה להעלות סרטון' : ''}
+          onClick={() => {
+            if (loading || user.role === "Member") return;
+            document.getElementById("upload-input").click();
+          }}
+          style={{
+            cursor:
+              user.role === "Member"
+                ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='16' cy='16' r='6' fill='red' /></svg>") 16 16, auto`
+                : 'pointer',
+            opacity: user.role === "Member" || loading ? 0.5 : 1, // הדמיית השבתה ויזואלית
+          }}
         />
+
       </label>
       <Button
         label={loading ? 'מעלה...' : 'העלה וידאו'}
         icon="pi pi-check"
         className="p-button-primary"
         type="submit"
-        disabled={loading}
+        disabled={loading || user.role === "Member"}
+        tooltip={user.role === "Member" ? 'אין לך הרשאה להעלות סרטון' : ''}
       />
     </form>
   );

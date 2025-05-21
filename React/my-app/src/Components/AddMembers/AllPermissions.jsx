@@ -3,6 +3,8 @@ const ALL_PERMISSIONS = [
   'edit security',
   'delete security',
   'view security',
+  'add graph',
+  'add member',
   // הוסיפי כאן כל הרשאה חדשה בעתיד
 ];
 
