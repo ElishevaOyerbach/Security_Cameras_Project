@@ -6,6 +6,7 @@ const {createSecurityCameras,addPeopleAnalysis,getPeopleAnalysis,deleteSecurityC
 router.post("/createSecurityCameras",createSecurityCameras)
 router.post("/addPeopleAnalysis/:id", addPeopleAnalysis);
 
+router.delete("/deleteSecurityCamera/:id",deleteSecurityCamera)
 router.get('/getPeopleAnalysis/:id',getPeopleAnalysis)
 
 router.delete("/deleteSecurityCamera/:id",deleteSecurityCamera);

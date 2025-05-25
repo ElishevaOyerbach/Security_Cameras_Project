@@ -53,3 +53,11 @@ body {
     transform: rotate(360deg);
   }
 }
+.custom-upload-button .p-button {
+  border: 1px solid var(--accent-green) !important;
+  color: var(--accent-green) !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 8px #29cc8b !important;
+}
+
+

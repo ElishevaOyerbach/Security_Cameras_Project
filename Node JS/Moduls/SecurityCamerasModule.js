@@ -6,16 +6,14 @@ const SecurityCamerasModule = mongoose.Schema({
     date: { type: Date, default: Date.now },
     length: { type: Number },
     filePath: { type: String },
-    administartorID:{ type:String },  
-
+    administartorID: { type: String },
     peoplePerMinute: [
-    {
-      hour: String,
-      people: Number,
+        {
+            hour: String,
+            people: Number,
+        },
+    ],
 
-    },
-  ],
-   
 });
 
 module.exports = mongoose.model("SecurityCameras", SecurityCamerasModule);

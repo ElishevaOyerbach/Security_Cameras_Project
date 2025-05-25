@@ -54,7 +54,6 @@ function AppContent() {
     </Routes>
   );
 }
-  
 function App() {
   return (
     <BrowserRouter>

@@ -17,7 +17,8 @@ const CreatNewMember = ({ visible, onClose }) => {
         prefix:"972",
         arrSecurityCameras: [],
         arrAnalysisSchema: [],
-        AccessPermissions: []
+        AccessPermissions: [],
+        administartorID: "",
     });
 
     const admin = useSelector((state) => state.AdministratorSlice);
@@ -50,6 +51,7 @@ const CreatNewMember = ({ visible, onClose }) => {
                         email: '',
                         phone: '',
                         AccessPermissions: [],
+                        administartorID: ID,
                     }}
                     onValuesChange={(changedValues, allValues) => {
                         setFormData(allValues);
