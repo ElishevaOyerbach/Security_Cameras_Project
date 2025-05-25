@@ -7,7 +7,8 @@ const initialValue={
     phone:"",
     password:"",
     role: "Member",
-    arrPermetion:[]
+    administartorID: "",
+    AccessPermissions: [] 
 }
 
 const MemberSlice= createSlice({
@@ -20,7 +21,8 @@ const MemberSlice= createSlice({
             state.phone= action.payload.phone
             state.password= action.payload.password
             state.role= action.payload.role
-            state.arrPermetion= action.payload.arrPermetion
+            state.AccessPermissions = action.payload.AccessPermissions;
+            state.administartorID= action.payload.administartorID
         }
     }
 })

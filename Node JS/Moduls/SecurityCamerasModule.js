@@ -13,6 +13,7 @@ const SecurityCamerasModule = mongoose.Schema({
             people: Number,
         },
     ],
+
 });
 
 module.exports = mongoose.model("SecurityCameras", SecurityCamerasModule);

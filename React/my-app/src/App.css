@@ -1,3 +1,20 @@
+
+:root {
+  --bg-main: #2b2f3f;
+  --card-bg: #383c4d;
+  --text-color: #ffffff;
+  --box-shedo-color: #ffffff;
+  --accent-green: #00d084;
+  --line-green: #29cc8b;
+  
+}
+
+
+body {
+  background-color: var(--bg-main);
+  margin: 0;
+  font-family: sans-serif;
+}
 .App {
   text-align: center;
 }
@@ -36,3 +53,11 @@
     transform: rotate(360deg);
   }
 }
+.custom-upload-button .p-button {
+  border: 1px solid var(--accent-green) !important;
+  color: var(--accent-green) !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 8px #29cc8b !important;
+}
+
+

@@ -10,18 +10,19 @@ const AxiosCreteMemberByAdministrator = ({ ID, memberData }) => {
     useEffect(() => {
         const handleCreateAdmin = async () => {
             try {
-                const { Name, phone, password, email, AccessPermissions } = memberData;
+                const { Name, phone, password, email, AccessPermissions, prefix } = memberData;
 
                 const preparedData = {
 
                     name: Name,
-                    phone: `+${memberData.pre}${phone}`,
+                    phone: `+${memberData.prefix}${phone}`,
                     password,
                     email,
                     AccessPermissions: ALL_PERMISSIONS.map(permission => ({
                         sortPermissions: permission,
                         isPermissions: AccessPermissions.includes(permission)
-                    }))
+                    })),
+                    administartorID: ID
 
                 };
                 const response = await axios.post(
@@ -37,10 +38,12 @@ const AxiosCreteMemberByAdministrator = ({ ID, memberData }) => {
                     password: preparedData.password,
                     email: preparedData.email,
                     role: "Member",
-                    arrPermetion: AccessPermissions
+                    AccessPermissions: preparedData.AccessPermissions, 
+                    administartorID: ID
                 }));
                 //console.log('Administrator created successfully!', response.data.token);
-                alert('Administrator created successfully!');
+                alert('Member created successfully!', response.data);
+
             } catch (error) {
                 if (error.response) {
 

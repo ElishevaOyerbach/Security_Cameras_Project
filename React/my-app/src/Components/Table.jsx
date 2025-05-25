@@ -5,6 +5,7 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
+import { ProductService } from './ProductService';
 import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -15,21 +16,27 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
-
- const Table=()=> {
+import AxiosDeleteMember from '../DeleteMember/AxiosDeleteMember';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import AxiosUpdateMember from '../UpdateMember/AxiosUpdateMember ';
+import CreateNewMember from '../AddMembers/CreatNewMember';
+const Table = () => {
     let emptyProduct = {
-        id: null,
-        name: '',
-        image: null,
-        description: '',
-        category: null,
-        price: 0,
-        quantity: 0,
-        rating: 0,
-        inventoryStatus: 'INSTOCK'
+        AccessPermissions: [],
+        administartorID: '',
+        arrAnalysisSchema: [],
+        arrSecurityCameras: [],
+        email: null,
+        name: " ",
+        password: null,
+        phone: null,
+        role: 'Member',
+        _id: '',
     };
 
-    const [products, setProducts] = useState(null);
+
+    const [products, setProducts] = useState();
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
@@ -40,19 +47,38 @@ import { Tag } from 'primereact/tag';
     const toast = useRef(null);
     const dt = useRef(null);
 
-    
+    const admin = useSelector((state) => state.AdministratorSlice);
+    const token = localStorage.getItem("token");  // קבלת ה-TOKEN מה-localStorage
+
+
     // useEffect(() => {
     //     ProductService.getProducts().then((data) => setProducts(data));
     // }, []);
+    useEffect(() => {
+        ProductService.getProducts(admin._id).then((data) => {
+            console.log('products from server:', data);
+            setProducts(data);
+        });
+    }, []);
+
+
 
     const formatCurrency = (value) => {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     };
+    const [showAddEmployee, setShowAddEmployee] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const openNew = () => {
+        setShowAddEmployee(true);
         setProduct(emptyProduct);
         setSubmitted(false);
-        setProductDialog(true);
+        //setProductDialog(true);
+        console.log('openNew', product);
+    };
+    const refreshProducts = async () => {
+        const data = await ProductService.getProducts(admin._id);
+        setProducts(data);
     };
 
     const hideDialog = () => {
@@ -68,31 +94,34 @@ import { Tag } from 'primereact/tag';
         setDeleteProductsDialog(false);
     };
 
-    const saveProduct = () => {
+    const saveProductHandler = async () => {
         setSubmitted(true);
-
         if (product.name.trim()) {
-            let _products = [...products];
-            let _product = { ...product };
+            try {
+                const response = await AxiosUpdateMember(product, admin, token);
+                if (response.status === 200) {
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Successful',
+                        detail: 'Product Updated',
+                        life: 3000
+                    });
 
-            if (product.id) {
-                const index = findIndexById(product.id);
+                    await ProductService.getProducts(admin._id).then((data) => setProducts(data));
 
-                _products[index] = _product;
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            } else {
-                _product.id = createId();
-                _product.image = 'product-placeholder.svg';
-                _products.push(_product);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                    setProductDialog(false); // ✅ סוגר את הדיאלוג
+                    setProduct(emptyProduct); // מאפס את הטופס
+                }
+            } catch (error) {
+                toast.current.show({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to update product',
+                    life: 3000
+                });
             }
-
-            setProducts(_products);
-            setProductDialog(false);
-            setProduct(emptyProduct);
         }
     };
-
     const editProduct = (product) => {
         setProduct({ ...product });
         setProductDialog(true);
@@ -104,36 +133,12 @@ import { Tag } from 'primereact/tag';
     };
 
     const deleteProduct = () => {
-        let _products = products.filter((val) => val.id !== product.id);
+        let _products = products.filter((val) => val._id !== product._id);
 
         setProducts(_products);
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-    };
-
-    const findIndexById = (id) => {
-        let index = -1;
-
-        for (let i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    };
-
-    const createId = () => {
-        let id = '';
-        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-
-        return id;
     };
 
     const exportCSV = () => {
@@ -161,14 +166,15 @@ import { Tag } from 'primereact/tag';
     };
 
     const onInputChange = (e, name) => {
-        const val = (e.target && e.target.value) || '';
-        let _product = { ...product };
+        let val = e.target?.value !== undefined ? e.target.value : e.value;
 
-        _product[`${name}`] = val;
-
-        setProduct(_product);
+        setProduct((prevProduct) => {
+            return {
+                ...prevProduct,
+                [name]: val
+            };
+        });
     };
-
     const onInputNumberChange = (e, name) => {
         const val = e.value || 0;
         let _product = { ...product };
@@ -177,7 +183,6 @@ import { Tag } from 'primereact/tag';
 
         setProduct(_product);
     };
-
     const leftToolbarTemplate = () => {
         return (
             <div className="flex flex-wrap gap-2">
@@ -186,27 +191,21 @@ import { Tag } from 'primereact/tag';
             </div>
         );
     };
-
     const rightToolbarTemplate = () => {
         return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
     };
-
     const imageBodyTemplate = (rowData) => {
         return <img src={`https://primefaces.org/cdn/primereact/images/product/${rowData.image}`} alt={rowData.image} className="shadow-2 border-round" style={{ width: '64px' }} />;
     };
-
     const priceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.price);
+        return formatCurrency(rowData.name);
     };
-
     const ratingBodyTemplate = (rowData) => {
         return <Rating value={rowData.rating} readOnly cancel={false} />;
     };
-
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.inventoryStatus} severity={getSeverity(rowData)}></Tag>;
     };
-
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
@@ -215,7 +214,6 @@ import { Tag } from 'primereact/tag';
             </React.Fragment>
         );
     };
-
     const getSeverity = (product) => {
         switch (product.inventoryStatus) {
             case 'INSTOCK':
@@ -244,7 +242,7 @@ import { Tag } from 'primereact/tag';
     const productDialogFooter = (
         <React.Fragment>
             <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" onClick={saveProductHandler} />
         </React.Fragment>
     );
     const deleteProductDialogFooter = (
@@ -262,84 +260,129 @@ import { Tag } from 'primereact/tag';
 
     return (
         <div>
+            <CreateNewMember
+                visible={showAddEmployee}
+                onClose={() => setShowAddEmployee(false)}
+            />
+
+
+
             <Toast ref={toast} />
             <div className="card">
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
                 <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                        dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
+                    dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
                     <Column selectionMode="multiple" exportable={false}></Column>
-                    <Column field="code" header="Code" sortable style={{ minWidth: '12rem' }}></Column>
                     <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
-                    <Column field="image" header="Image" body={imageBodyTemplate}></Column>
-                    <Column field="adminostrator" header="Adminostrator" sortable style={{ minWidth: '10rem' }}></Column>
-                   
+                    <Column field="phone" header="Phone" sortable style={{ minWidth: '16rem' }}></Column>
+                    <Column field="email" header="Email" sortable style={{ minWidth: '12rem' }}></Column>
                     <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
                 </DataTable>
+
             </div>
 
-            <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                {product.image && <img src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.image} className="product-image block m-auto pb-3" />}
+            <Dialog
+                visible={productDialog}
+                style={{ width: '32rem' }}
+                breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+                header="Memberr Details"
+                modal
+                className="p-fluid"
+                footer={productDialogFooter}
+                onHide={hideDialog}
+            >
+                {product.image && (
+                    <img
+                        src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`}
+                        alt={product.image}
+                        className="product-image block m-auto pb-3"
+                    />
+                )}
+
+                {/* Name */}
                 <div className="field">
-                    <label htmlFor="name" className="font-bold">
-                        Name
-                    </label>
-                    <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                    {submitted && !product.name && <small className="p-error">Name is required.</small>}
+                    <label htmlFor="name" className="font-bold">Name</label>
+                    <InputText
+                        id="name"
+                        value={product.name || ''}
+                        onChange={(e) => onInputChange(e, 'name')}
+                        required
+                        autoFocus
+                        className={classNames({ 'p-invalid': submitted && !product.name })}
+                    />
+                    {submitted && !product.name && (
+                        <small className="p-error">Name is required.</small>
+                    )}
                 </div>
+
+                {/* Email */}
                 <div className="field">
-                    <label htmlFor="description" className="font-bold">
-                        Description
-                    </label>
-                    <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
+                    <label htmlFor="email" className="font-bold">Email</label>
+                    <InputText
+                        id="email"
+                        value={product.email || ''}
+                        onChange={(e) => onInputChange(e, 'email')}
+                        required
+                        className={classNames({ 'p-invalid': submitted && !product.email })}
+                    />
+                    {submitted && !product.email && (
+                        <small className="p-error">Email is required.</small>
+                    )}
                 </div>
 
                 <div className="field">
-                    <label className="mb-3 font-bold">Category</label>
+                    <label htmlFor="phone" className="font-bold">Phone</label>
+                    <InputNumber
+                        id="phone"
+                        value={product.phone || ''}
+                        onValueChange={(e) => onInputNumberChange(e, 'phone')}
+                        mode="decimal"
+                        locale="en-US"
+                    />
+                </div>
+
+                {/* Permissions */}
+                <div className="field">
+                    <label className="font-bold mb-3">Permissions</label>
                     <div className="formgrid grid">
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={product.category === 'Accessories'} />
-                            <label htmlFor="category1">Accessories</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={product.category === 'Clothing'} />
-                            <label htmlFor="category2">Clothing</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={product.category === 'Electronics'} />
-                            <label htmlFor="category3">Electronics</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={product.category === 'Fitness'} />
-                            <label htmlFor="category4">Fitness</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="formgrid grid">
-                    <div className="field col">
-                        <label htmlFor="price" className="font-bold">
-                            Price
-                        </label>
-                        <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-                    </div>
-                    <div className="field col">
-                        <label htmlFor="quantity" className="font-bold">
-                            Quantity
-                        </label>
-                        <InputNumber id="quantity" value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} />
+                        {product.AccessPermissions?.map((perm, index) => (
+                            <div key={perm._id || index} className="col-12 flex align-items-center mb-2">
+                                <Button
+                                    icon={perm.isPermissions ? 'pi pi-check-circle' : 'pi pi-circle-off'}
+                                    className={`p-button-rounded p-button-sm me-2 ${perm.isPermissions ? 'p-button-success' : 'p-button-secondary'}`}
+                                    onClick={() => {
+                                        const updatedPermissions = [...product.AccessPermissions];
+                                        updatedPermissions[index].isPermissions = !updatedPermissions[index].isPermissions;
+                                        setProduct((prev) => ({
+                                            ...prev,
+                                            AccessPermissions: updatedPermissions
+                                        }));
+                                    }}
+                                    tooltip={perm.isPermissions ? 'Click to disable' : 'Click to enable'}
+                                    tooltipOptions={{ position: 'top' }}
+                                />
+                                <span>{perm.sortPermissions}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </Dialog>
+
 
             <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                     {product && (
                         <span>
-                            Are you sure you want to delete <b>{product.name}</b>?
+                            Are you sure you want to delete<b>{product.name}
+                                <AxiosDeleteMember
+                                    memberId={product._id}
+                                    adminId={product.administartorID && product.administartorID.toString()}
+                                />
+                            </b>?
                         </span>
                     )}
                 </div>
@@ -351,8 +394,10 @@ import { Tag } from 'primereact/tag';
                     {product && <span>Are you sure you want to delete the selected products?</span>}
                 </div>
             </Dialog>
+
         </div>
+
+
     );
 }
 export default Table;
-        

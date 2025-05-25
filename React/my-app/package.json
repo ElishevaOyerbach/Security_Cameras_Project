@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.24.7",
     "axios": "^1.8.4",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.503.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",

@@ -341,6 +341,7 @@ async function getRecentCameraCountByAdministrator(req, res) {
         res.status(500).send("Failed to get camera count.");
     }
 }
+
 module.exports = {
     getRecentCameraCountByAdministrator,
     getCameraCountByAdministrator,

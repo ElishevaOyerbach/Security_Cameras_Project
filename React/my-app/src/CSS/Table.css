@@ -1,0 +1,107 @@
+:root {
+  --bg-main: #2b2f3f;
+  --card-bg: #383c4d;
+  --text-color: #ffffff;
+  --accent-green: #00d084;
+}
+
+/* רקע כללי */
+.card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+/* כותרת הטבלה */
+.custom-dark-table .p-datatable-header {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: none;
+}
+
+/* שורת הכותרות (headers) של העמודות */
+.custom-dark-table .p-datatable-thead > tr > th {
+  background-color: var(--card-bg);
+  color: var(--accent-green);
+}
+
+/* גוף הטבלה */
+.custom-dark-table .p-datatable-tbody > tr > td {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+/* סרגל פאג'ינציה (למטה) */
+.custom-dark-table .p-paginator {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: none;
+}
+
+
+
+.custom-dark-table .p-paginator .p-paginator-page.p-highlight {
+  background-color: var(--accent-green);
+  border-radius: 5px;
+}
+/* כל הכפתורים בתוך הטבלה יהיו ירוקים */
+.custom-dark-table .p-button {
+  border-color: #00d084 !important;
+  color: #ffffff !important;  /* טקסט שחור */
+    box-shadow: 0 0 6px #29cc8b !important;
+
+}
+/* בעת ריחוף */
+.custom-dark-table .p-button:hover {
+  background-color: #00c170 !important;
+  border-color: #00c170 !important;
+}
+.custom-toolbar {
+    background-color:   var(--card-bg);
+
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: white;
+}
+
+.custom-toolbar .p-button {
+    color: white;
+}
+
+.btn-ex {
+    background-color: #00c170 !important; /* Tailwind emerald-500 */
+    border: none;
+    color: white;
+}
+.custom-green-button:hover {
+    background-color: #00c170 !important; /* קצת יותר כהה */
+}
+.btn-dl {
+    background-color: #ff5454 !important; /* Tailwind emerald-500 */
+    border: none;
+    color: white;
+}
+.custom-dark-table .p-paginator .p-paginator-page.p-highlight {
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+ .p-paginator-current {
+    background-color: transparent;
+    border: 0 none;
+    color: #ffffff;
+    min-width: 2.357rem;
+    height: 2.357rem;
+    margin: 0.143rem;
+    padding: 0 0.5rem;
+}
+.custom-dark-table .p-datatable-tbody > tr > td {
+    background-color: var(--card-bg);
+    color: #ffffff;
+}
+
+
+
+
+
+/* כפתור נבחר */

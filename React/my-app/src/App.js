@@ -14,6 +14,7 @@ import PeopleChart from './Components/ControlPanel/Try'
 import Dashboard from './Components/Analys/Anyles';
 import UploadVideo from './Components/UploadVideo/UploadVidea';
 import SighInAdministrator from './Components/SighInAdministrator';
+import VideoProcessingOverlay from './Components/Laoding';
 
 const LazyLogin = React.lazy(() => import('./Components/Login/Login'));
 const LazySignIn = React.lazy(() => import('./Components/SighInAdministrator'));
@@ -57,10 +58,6 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
-
-
-
-
     </BrowserRouter>
   );
 }
