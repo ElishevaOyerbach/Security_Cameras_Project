@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialValue={
+    _id:"",
     name:"user",
     role: "user",
+    email:"",
 }
 
 const UserSlice= createSlice({
@@ -10,8 +12,10 @@ const UserSlice= createSlice({
     initialState: initialValue,
     reducers:{
         Create_User:(state,action)=>{
+            state._id= action.payload._id
             state.name= action.payload.name
             state.role= action.payload.role
+            state.email= action.payload.email
         }
     }
 })

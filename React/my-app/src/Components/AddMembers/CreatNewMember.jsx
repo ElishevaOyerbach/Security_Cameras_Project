@@ -15,14 +15,12 @@ const CreatNewMember = ({ visible, onClose }) => {
         password: "",
         role: "Member",
         prefix:"972",
-        arrSecurityCameras: [],
-        arrAnalysisSchema: [],
         AccessPermissions: [],
         administartorID: "",
     });
 
-    const admin = useSelector((state) => state.AdministratorSlice);
-    const ID = admin._id;
+    const user = useSelector((state) => state.UserSlice);
+    const ID = user._id;
     const [form] = Form.useForm();
 
     const handleOk = () => {

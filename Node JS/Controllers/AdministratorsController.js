@@ -341,6 +341,30 @@ async function getRecentCameraCountByAdministrator(req, res) {
         res.status(500).send("Failed to get camera count.");
     }
 }
+async function getUserById(req, res) {
+    try {
+        const { id } = req.params;
+
+        // ננסה קודם למצוא את המשתמש בטבלת המנהלים
+        let user = await Administrators.findById(id);
+        if (user) {
+            return res.status(200).json({ role: "Administrator", user });
+        }
+
+        // אם לא נמצא, ננסה בטבלת העובדים
+        user = await Members.findById(id);
+        if (user) {
+            return res.status(200).json({ role: "Member", user });
+        }
+
+        // לא נמצא בשום מקום
+        return res.status(404).send("User not found.");
+
+    } catch (error) {
+        console.error("Error retrieving user by ID:", error);
+        res.status(500).send("Failed to retrieve user.");
+    }
+}
 
 module.exports = {
     getRecentCameraCountByAdministrator,
@@ -356,5 +380,6 @@ module.exports = {
     loginAdministrator,
     deleteMemberByAdministrator,
     getAllSecurityCamerasByAdministrator,
-    updateMemberByAdministrator
+    updateMemberByAdministrator,
+    getUserById
 };

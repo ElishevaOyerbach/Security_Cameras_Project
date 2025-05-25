@@ -1,5 +1,5 @@
 import { Route, Routes, BrowserRouter, useLocation } from 'react-router-dom';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import './App.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -15,6 +15,8 @@ import Dashboard from './Components/Analys/Anyles';
 import UploadVideo from './Components/UploadVideo/UploadVidea';
 import SighInAdministrator from './Components/SighInAdministrator';
 import VideoProcessingOverlay from './Components/Laoding';
+import { useDispatch } from 'react-redux';
+import { Create_User } from './Store/UserSlice';
 
 const LazyLogin = React.lazy(() => import('./Components/Login/Login'));
 const LazySignIn = React.lazy(() => import('./Components/SighInAdministrator'));
@@ -55,6 +57,18 @@ function AppContent() {
   );
 }
 function App() {
+    const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    const role = localStorage.getItem("role");
+
+    if (userData && role) {
+      const user = JSON.parse(userData);
+      dispatch(Create_User({ ...user, role }));
+    }
+  }, [dispatch]);
+  
   return (
     <BrowserRouter>
       <AppContent />

@@ -244,17 +244,11 @@ const GetSecurity = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [adminId, setAdminID] = useState("");
-  const admin = useSelector((state) => state.AdministratorSlice);
   const user = useSelector((state) => state.UserSlice);
-  const member = useSelector((state) => state.MemberSlice);
 
   useEffect(() => {
-    if (user.role === "Member") {
-      setAdminID(member.administartorID || "");
-    } else {
-      setAdminID(admin._id || "");
-    }
-  }, [user, member, admin]);
+    setAdminID(user._id)
+  }, [user]);
 
   useEffect(() => {
     if (!adminId) return;

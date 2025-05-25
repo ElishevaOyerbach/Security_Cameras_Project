@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const AxiosGetMembersName = () => {
     
-  const administratorId = "68043ccf8b5cb28fe901eb41"; // תעודת זהות של המנהל, יש לשים את הערך הנכון כאן
+  const user = useSelector((state) => state.UserSlice);
+  if(user.role !== "Administrator"){
+    
+  }
+  const administratorId = user._id;
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 

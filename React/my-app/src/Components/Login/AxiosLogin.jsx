@@ -20,14 +20,22 @@ const AxiosLogin = ({ memberData }) => {
 
                 const token = response.data.token;
                 localStorage.setItem('token', token);
-                console.log('Response:', response.data); // הוספת לוג כדי לבדוק את התגובה
+                //בשביל הריענון של המסך
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                localStorage.setItem('role', response.data.role);
+                //
 
-                if (response.data.role === 'Member') {
-                    dispatch(Create_Member(response.data.user));
-                } else {
-                    dispatch(Create_Administrator(response.data.user));
-                }
-                dispatch(Create_User({ role: response.data.role ,name: response.data.user.name}));
+                // if (response.data.role === 'Member') {
+                //     dispatch(Create_Member(response.data.user));
+                // } else {
+                //     dispatch(Create_Administrator(response.data.user));
+                // }
+                dispatch(Create_User({
+                    _id: response.data.user._id,
+                    name: response.data.user.name,
+                    role: response.data.role,
+                    email: response.data.user.email
+                }));
                 console.log('Login successful!', memberData);
                 alert('Login successful!');
             } catch (error) {
