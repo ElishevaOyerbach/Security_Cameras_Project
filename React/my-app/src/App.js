@@ -28,6 +28,7 @@ const LazyControlPanel = React.lazy(() => import('./Components/ControlPanel/Cont
 const LazyDashboard = React.lazy(() => import('./Components/Analys/Try'));
 
 
+
 function LayoutWithSidebar({ children }) {
   return (
     <div style={{ display: 'flex' }}>
@@ -45,7 +46,7 @@ function AppContent() {
   return (
     <Routes>
       <Route path="/" element={<Suspense fallback={'loading...'}><LazyHome /></Suspense>} />
-      <Route path="/Sign-In" element={<LayoutWithSidebar><Suspense fallback={'loading...'}><LazySignIn /></Suspense></LayoutWithSidebar>} />
+      <Route path="/SignIn" element={<LayoutWithSidebar><Suspense fallback={'loading...'}><LazySignIn /></Suspense></LayoutWithSidebar>} />
       <Route path="/Login" element={<LayoutWithSidebar><Suspense fallback={'loading...'}><LazyLogin /></Suspense></LayoutWithSidebar>} />
       <Route path="/Login/PersonalArea" element={<LayoutWithSidebar><Suspense fallback={'loading...'}><LazyPersonalArea /></Suspense></LayoutWithSidebar>} />
       <Route path="/GetSecurity" element={<LayoutWithSidebar><Suspense fallback={'loading...'}><LazyGetSecurity /></Suspense></LayoutWithSidebar>} />
@@ -72,6 +73,7 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
+
    
     </BrowserRouter>
   );

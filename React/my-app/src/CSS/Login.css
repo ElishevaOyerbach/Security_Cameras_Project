@@ -1,0 +1,76 @@
+:root {
+  --bg-main: #2b2f3f;
+  --card-bg: #383c4d;
+  --text-color: #ffffff;
+  --box-shadow-color: rgba(255, 255, 255, 0.1);
+  --accent-green: #00d084;
+}
+
+body {
+  background-color: var(--bg-main);
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  padding: 1rem;
+  background-color: var(--bg-main);
+}
+
+.login-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.login-graph {
+  width: 100%;
+  height: 100%;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 20px var(--box-shadow-color);
+}
+
+.login-title {
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+}
+
+label {
+  color: var(--text-color);
+  margin-top: 1rem;
+}
+
+.input {
+  background-color: #2b2f3f !important;
+  border: 1px solid #555 !important;
+  color: var(--text-color) !important;
+  border-radius: 6px !important;
+  margin-bottom: 1rem;
+}
+
+.input:focus {
+  border-color: var(--accent-green) !important;
+  box-shadow: 0 0 0 0.1rem var(--accent-green) !important;
+}
+
+.login-btn {
+  background-color: var(--accent-green) !important;
+  border: none !important;
+  font-weight: bold !important;
+  margin-top: 1rem !important;
+}

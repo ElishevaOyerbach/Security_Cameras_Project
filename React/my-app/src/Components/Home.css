@@ -1,209 +1,60 @@
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
-  
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f9f9fa;
-  }
-  
-  .logo {
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .logo svg {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .login-container {
-    width: 480px;
-    padding: 40px;
-    background-color: white;
-    border-radius: 24px;
-    box-shadow: 0 2px 40px rgba(0, 0, 0, 0.05);
-  }
-  
-  .profile-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin: 0 auto 24px;
-    display: block;
-    background-color: #f0f0f0;
-    object-fit: cover;
-  }
-  
-  h1 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 8px;
-    color: #222;
-    font-weight: 600;
-  }
-  
-  .subtitle {
-    text-align: center;
-    color: #666;
-    margin-bottom: 32px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .input-label {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 8px;
-    font-weight: 500;
-  }
-  
-  .input-field {
-    margin-bottom: 24px;
-  }
-  
-  input[type="text"],
-  input[type="email"] {
-    width: 100%;
-    padding: 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  input:focus {
-    outline: none;
-    border-color: #6366f1;
-  }
-  
-  /* Enhanced Password Field Styling */
-  /* .password-field {
-    position: relative;
-  }
-  
-  .password-field input {
-    width: 100%;
-    padding: 16px;
-    padding-right: 50px;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    font-size: 16px;
-    color: #333;
-    transition: all 0.3s ease;
-  }
-  
-  .password-field input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-  }
-  
-  .password-toggle {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .password-toggle:hover {
-    color: #6366f1;
-  }
-  
-  .password-strength {
-    height: 4px;
-    width: 100%;
-    background: #f0f0f0;
-    margin-top: 8px;
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .password-strength-meter {
-    height: 100%;
-    width: 0;
-    border-radius: 2px;
-    transition: width 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .password-strength-text {
-    font-size: 12px;
-    margin-top: 6px;
-    color: #888;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .password-hint {
-    font-size: 12px;
-    color: #888;
-    margin-top: 6px;
-    display: none;
-  }
-  
-  .password-field input:focus + .password-hint {
-    display: block;
-  }
-  
-  .checkbox-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-  }
-  
-  .remember-me {
-    display: flex;
-    align-items: center;
-  }
-  
-  .remember-me input {
-    margin-right: 8px;
-  }
-  
-  .forgot-password {
-    color: #6366f1;
-    text-decoration: none;
-  }
-  
-  .sign-in-button {
-    background-color: #6366f1;
-    color: white;
-    border: none;
-    padding: 16px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .sign-in-button:hover {
-    background-color: #4f46e5;
-  }
-  
-  @media (max-width: 520px) {
-    .login-container {
-      width: 90%;
-      padding: 30px 20px;
-    }
-  }
-   */ 
+:root {
+  --bg-main: #2b2f3f;
+  --card-bg: #383c4d;
+  --text-color: #ffffff;
+  --box-shadow-color: rgba(255, 255, 255, 0.1);
+  --accent-green: #00d084;
+  --line-green: #29cc8b;
+}
+
+.home-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--bg-main);
+  overflow: hidden;
+}
+
+.home-wrapper .background-graph {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.08;
+  z-index: 0;
+}
+
+.home-wrapper .card {
+  background-color: var(--card-bg);
+  padding: 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 20px var(--box-shadow-color);
+  text-align: center;
+  max-width: 500px;
+  z-index: 1;
+}
+
+.home-wrapper .title {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--text-color);
+}
+
+.home-wrapper .button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.home-wrapper .login-button {
+  background-color: var(--accent-green);
+  border: none;
+}
+
+.home-wrapper .signin-button {
+  background-color: var(--line-green);
+  border: none;
+}
