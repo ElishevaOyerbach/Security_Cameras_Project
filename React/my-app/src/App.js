@@ -72,6 +72,7 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
+   
     </BrowserRouter>
   );
 }

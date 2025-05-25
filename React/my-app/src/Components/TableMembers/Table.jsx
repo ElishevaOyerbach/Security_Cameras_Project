@@ -22,7 +22,8 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import AxiosUpdateMember from '../UpdateMember/AxiosUpdateMember ';
 import CreateNewMember from '../AddMembers/CreatNewMember';
-import '../../CSS/Table.css';
+import '../../CSS/Table.css'; 
+
 
 const Table = () => {
     let emptyProduct = {
@@ -191,6 +192,9 @@ const Table = () => {
         return (
             <div className="flex flex-wrap gap-2">
                 <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} className='btn-ex'/>
+
+                <Button className="btn-dl" label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length}  />
+
                 {/* <Button className="btn-dl" label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length}  /> */}
             </div>
         );
