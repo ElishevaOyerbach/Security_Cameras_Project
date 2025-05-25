@@ -116,41 +116,62 @@
 // };
 
 // export default UploadVideo;
+/////////////////////////////////////////////////////////////////////////
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 import { set } from 'react-hook-form';
+import AxiosGetUserById from '../ControlPanel/AxiosGetUserById';
 
 const UploadVideo = () => {
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const admin = useSelector((state) => state.AdministratorSlice);
   const user = useSelector((state) => state.UserSlice);
-  const member = useSelector((state) => state.MemberSlice);
+
+  const [fullUser, setFullUser] = useState(null); // 
   const [arrPermitions, setArrPermitions] = useState([]);
   const token = localStorage.getItem("token");
 
   const [adminId, setAdminID] = useState("");
 
   useEffect(() => {
+    const fetchFullUser = async () => {
+      try {
+        const data = await AxiosGetUserById(user._id);
+        setFullUser(data.user);
+      } catch (err) {
+        console.error("שגיאה בקבלת פרטי המשתמש:", err);
+        setError("שגיאה בטעינת פרטי המשתמש.");
+      }
+    };
 
+    if (user?._id && token) {
+      fetchFullUser();
+    }
+  }, [user, token]);
+  useEffect(() => {
+    if (!fullUser) return;
     if (user.role === "Member") {
-      setArrPermitions(member.arrPermetion || []);
-      setAdminID(member.administartorID);
+      setArrPermitions(fullUser.arrPermetion || []);
+      setAdminID(fullUser.administartorID);
     } else {
       setArrPermitions([]);
-      setAdminID(admin._id);
+      setAdminID(fullUser._id);
     }
-  }, [user, member]);
-  const isButtonDisabled =
-  user.role === "Member" &&
-  !member.AccessPermissions?.some(
-    (perm) => perm.sortPermissions === "add security" && perm.isPermissions === true
-  );
+  }, [user, fullUser]);
+  const isButtonDisabled = (() => {
+    if (user.role !== "Member") return false;
+    if (!fullUser || !Array.isArray(fullUser.AccessPermissions)) return true;
+
+    return !fullUser.AccessPermissions.some(
+      (perm) =>
+        perm.sortPermissions === "add security" && perm.isPermissions === true
+    );
+  })();
 
   const handleFileSelect = (event) => {
     setVideo(event.files[0]);

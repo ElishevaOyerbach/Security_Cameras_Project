@@ -239,6 +239,7 @@ import UploadVideo from './UploadVideo/UploadVidea';
 import { Link } from 'react-router-dom';
 import AxiosPeoplePerMinute from './Analys/AxiosPeoplePerMinute';
 import AxiosDelete from './DeleteVideo/AxiosDelete';
+import AxiosGetAdministratorIdByMember from './GetAllSecurityCameras/AxiosGetAdministratorIdByMember';
 
 const GetSecurity = () => {
   const [videos, setVideos] = useState([]);
@@ -247,8 +248,23 @@ const GetSecurity = () => {
   const user = useSelector((state) => state.UserSlice);
 
   useEffect(() => {
-    setAdminID(user._id)
+    const fetchAdminId = async () => {
+      if (!user?._id) return;
+      if (user.role !== "Member") {
+        setAdminID(user._id);
+        return;
+      }
+      try {
+        const id = await AxiosGetAdministratorIdByMember(user._id);
+        setAdminID(id);
+      } catch (error) {
+        console.error("שגיאה בשליפת מזהה מנהל:", error);
+      }
+    };
+
+    fetchAdminId();
   }, [user]);
+
 
   useEffect(() => {
     if (!adminId) return;

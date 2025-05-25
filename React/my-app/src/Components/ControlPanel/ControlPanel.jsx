@@ -172,7 +172,6 @@ import { Card } from 'primereact/card';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import AxiosGetCountMember from './AxiosGetCountMember';
 import { useSelector } from 'react-redux';
 import AxiosGetUserById from './AxiosGetUserById';
 
@@ -272,7 +271,7 @@ const ControlPanel = () => {
     fetchData();
   }, [user?._id]);
 
-  const { count: cameraCount } = AxiosGetCountMember(userAll?._id, 'getRecentCameraCountByAdministrator');
+  //const { count: cameraCount } = AxiosGetCountMember(userAll?._id, 'getRecentCameraCountByAdministrator');
 
   return (
     <div style={styles.container}>
@@ -315,7 +314,7 @@ const ControlPanel = () => {
             </span>
           }
         >
-          <div style={styles.value}>{cameraCount}</div>
+          <div style={styles.value}>{userAll?.arrMembers?.length ?? '...'}</div>
         </Card>
 
         <Card

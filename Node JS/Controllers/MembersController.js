@@ -33,8 +33,27 @@ async function getAllAnalysisSchemaByMember(req, res) {
 }
 
 
+async function getAdministratorIdByMember(req, res) {
+    try {
+        const { id } = req.params; // קבלת מזהה העובד
+
+        const member = await Members.findById(id); // חיפוש העובד
+
+        if (!member) {
+            return res.status(404).send("Member not found.");
+        }
+
+        const administratorId = member.administartorID; // שליפת מזהה המנהל
+
+        res.status(200).json({ administratorId }); // החזרה כ־JSON
+
+    } catch (error) {
+        console.error("Error fetching administrator ID:", error);
+        res.status(500).send("Failed to fetch administrator ID.");
+    }
+}
 // ייצוא הפונקציות שנוצרו
-module.exports={ getAllSecurityCamerasByMember,getAllAnalysisSchemaByMember}
+module.exports={ getAllSecurityCamerasByMember,getAllAnalysisSchemaByMember,getAdministratorIdByMember}
  
 
 
