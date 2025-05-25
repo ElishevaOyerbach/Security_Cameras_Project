@@ -1,32 +1,39 @@
-import React, { useState } from 'react';
-
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import DeleteVideoAction from './DeleteVideoAction';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Button } from "primereact/button";
+import "./Home.css";
 
 const Home = () => {
-   const [shouldDelete, setShouldDelete] = useState(false);
-  return(
-    <div className="home-container">
-      <h1>Welcome to the Home Page</h1>
-      <p>This is a simple home page component...</p>
+  return (
+    <div className="home-wrapper">
+      <svg
+        className="background-graph"
+        viewBox="0 0 800 600"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0,300 
+             C100,200 200,400 300,300 
+             C400,200 500,400 600,300 
+             C700,200 800,400 800,400 
+             L800,600 L0,600 Z"
+          fill="var(--line-green)"
+        />
+      </svg>
 
-
-            <Link to="/Login">Login</Link>
-            <br></br>
-            <Link to="/Sigh-In">Sign In</Link>
-
-            <button
-          onClick={() => setShouldDelete(true)}
-          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-        >
-        </button>
-        {shouldDelete && (
-        <DeleteVideoAction videoId={'682cf9c20513483851a66da5'} onDeleteSuccess={() => setShouldDelete(false)} />
-      )}
-
-    </div>  
-  )
-}
+      <div className="card">
+        <h1 className="title">Welcome to the Security Camera System</h1>
+        <div className="button-group">
+          <Link to="/Login">
+            <Button label="Login" className="p-button-rounded login-button" />
+          </Link>
+          <Link to="/SignIn">
+            <Button label="Sign In" className="p-button-rounded signin-button" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Home;
