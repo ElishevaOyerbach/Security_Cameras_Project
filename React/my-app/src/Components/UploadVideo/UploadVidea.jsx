@@ -124,6 +124,7 @@ import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 import { set } from 'react-hook-form';
 import AxiosGetUserById from '../ControlPanel/AxiosGetUserById';
+import HasPermission from '../AddMembers/hasPermission';
 
 const UploadVideo = () => {
   const [video, setVideo] = useState(null);
@@ -163,15 +164,9 @@ const UploadVideo = () => {
       setAdminID(fullUser._id);
     }
   }, [user, fullUser]);
-  const isButtonDisabled = (() => {
-    if (user.role !== "Member") return false;
-    if (!fullUser || !Array.isArray(fullUser.AccessPermissions)) return true;
 
-    return !fullUser.AccessPermissions.some(
-      (perm) =>
-        perm.sortPermissions === "add security" && perm.isPermissions === true
-    );
-  })();
+  const isButtonDisabled = !HasPermission("add security", arrPermitions, user.role);
+
 
   const handleFileSelect = (event) => {
     setVideo(event.files[0]);

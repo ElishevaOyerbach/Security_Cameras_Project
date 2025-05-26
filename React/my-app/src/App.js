@@ -17,7 +17,7 @@ import SighInAdministrator from './Components/SighInAdministrator';
 import VideoProcessingOverlay from './Components/Laoding';
 import { useDispatch } from 'react-redux';
 import { Create_User } from './Store/UserSlice';
-
+import MultiRecordingChart from './Components/ControlPanel/MultiAnalysFromAdmin'
 const LazyLogin = React.lazy(() => import('./Components/Login/Login'));
 const LazySignIn = React.lazy(() => import('./Components/SighInAdministrator'));
 const LazyHome = React.lazy(() => import('./Components/Home'));
@@ -73,8 +73,7 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
-
-   
+   <MultiRecordingChart/>
     </BrowserRouter>
   );
 }
