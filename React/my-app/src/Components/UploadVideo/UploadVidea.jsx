@@ -154,6 +154,7 @@ const UploadVideo = () => {
       fetchFullUser();
     }
   }, [user, token]);
+  
   useEffect(() => {
     if (!fullUser) return;
     if (user.role === "Member") {
