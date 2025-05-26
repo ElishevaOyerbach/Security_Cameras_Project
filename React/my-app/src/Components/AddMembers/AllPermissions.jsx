@@ -9,4 +9,4 @@ const ALL_PERMISSIONS = [
   //להוספת הרשאה בעתיד
 ];
 
-export default ALL_PERMISSIONS;
+export default ALL_PERMISSIONS; 
