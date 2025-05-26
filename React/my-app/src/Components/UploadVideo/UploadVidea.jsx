@@ -157,7 +157,7 @@ const UploadVideo = () => {
   useEffect(() => {
     if (!fullUser) return;
     if (user.role === "Member") {
-      setArrPermitions(fullUser.arrPermetion || []);
+      setArrPermitions(fullUser.AccessPermissions || []);
       setAdminID(fullUser.administartorID);
     } else {
       setArrPermitions([]);
@@ -165,6 +165,7 @@ const UploadVideo = () => {
     }
   }, [user, fullUser]);
 
+  
   const isButtonDisabled = !HasPermission("add security", arrPermitions, user.role);
 
 

@@ -73,7 +73,6 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
-   <MultiRecordingChart/>
     </BrowserRouter>
   );
 }
