@@ -22,7 +22,10 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import AxiosUpdateMember from '../UpdateMember/AxiosUpdateMember ';
 import CreateNewMember from '../AddMembers/CreatNewMember';
-import '../../CSS/Table.css'; 
+import '../../CSS/Table.css';
+import AxiosGetAdministratorIdByMember from '../GetAllSecurityCameras/AxiosGetAdministratorIdByMember';
+import AxiosGetUserById from '../ControlPanel/AxiosGetUserById';
+import HasPermission from '../AddMembers/HasPermission';
 
 
 const Table = () => {
@@ -48,23 +51,65 @@ const Table = () => {
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
+    const [error, setError] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
-
-    const user = useSelector((state) => state.UserSlice);
-
     const token = localStorage.getItem("token");  // קבלת ה-TOKEN מה-localStorage
+    const user = useSelector((state) => state.UserSlice);
+    const [fullUser, setFullUser] = useState(null); // 
+    const [arrPermitions, setArrPermitions] = useState([]);
+    const [adminId, setAdminId] = useState([])
 
 
-    // useEffect(() => {
-    //     ProductService.getProducts().then((data) => setProducts(data));
-    // }, []);
     useEffect(() => {
-        ProductService.getProducts(user._id).then((data) => {
-            console.log('products from server:', data);
-            setProducts(data);
-        });
-    }, []);
+        const fetchAdminId = async () => {
+            if (user.role !== "Member") {
+                setAdminId(user._id);
+            } else if (user?._id) {
+                try {
+                    const data = await AxiosGetUserById(user._id);
+                    setAdminId(data.user.administartorID);
+                    setFullUser(data.user);
+                    setArrPermitions(data.user.AccessPermissions);
+                    // console.log("arrPermitions---------"+arrPermitions)
+                    // console.log(data.user.AccessPermissions)
+                    // const isButtonDisabled = !HasPermission("add security", arrPermitions, user.role);
+                    // console.log(isButtonDisabled)
+
+                } catch (err) {
+                    console.error("שגיאה בקבלת פרטי המשתמש:", err);
+                    setError("שגיאה בטעינת פרטי המשתמש.");
+                }
+            }
+        };
+
+        fetchAdminId();
+    }, [user]);
+    const [isCanAddMember, setIsCanAddMember] = useState(true)
+    const [isCanEditMember, setIsCanEditMember] = useState(true);
+    const [isCanDeleteMember, setIsCanDeleteMember] = useState(true);
+
+
+    useEffect(() => {
+        console.log("arrPermitions updated:", arrPermitions);
+        setIsCanAddMember(HasPermission("add member", arrPermitions, user.role));
+        setIsCanEditMember(HasPermission("edit member", arrPermitions, user.role));
+        setIsCanDeleteMember(HasPermission("delete member", arrPermitions, user.role));
+        //setIsCanAddMember(HasPermission("edit member", arrPermitions, user.role)); 
+        //console.log(isButtonDisabled);
+    }, [arrPermitions, user.role]);
+    console.log(isCanAddMember);
+
+
+    useEffect(() => {
+        if (adminId) {
+            ProductService.getProducts(adminId).then((data) => {
+                console.log('products from server:', data);
+                setProducts(data);
+            });
+        }
+    }, [adminId]);
+
 
 
 
@@ -75,14 +120,16 @@ const Table = () => {
     const [showModal, setShowModal] = useState(false);
 
     const openNew = () => {
-        setShowAddEmployee(true);
-        setProduct(emptyProduct);
-        setSubmitted(false);
-        //setProductDialog(true);
-        console.log('openNew', product);
+        if (isCanAddMember) {
+            setShowAddEmployee(true);
+            setProduct(emptyProduct);
+            setSubmitted(false);
+            //setProductDialog(true);
+            console.log('openNew', product);
+        }
     };
     const refreshProducts = async () => {
-        const data = await ProductService.getProducts(user._id);
+        const data = await ProductService.getProducts(adminId);
         setProducts(data);
     };
 
@@ -111,9 +158,7 @@ const Table = () => {
                         detail: 'Product Updated',
                         life: 3000
                     });
-
-                    await ProductService.getProducts(user._id).then((data) => setProducts(data));
-
+                    await ProductService.getProducts(adminId).then((data) => setProducts(data));
                     setProductDialog(false); // ✅ סוגר את הדיאלוג
                     setProduct(emptyProduct); // מאפס את הטופס
                 }
@@ -128,8 +173,10 @@ const Table = () => {
         }
     };
     const editProduct = (product) => {
-        setProduct({ ...product });
-        setProductDialog(true);
+        if (isCanEditMember) {
+            setProduct({ ...product });
+            setProductDialog(true);
+        }
     };
 
     const confirmDeleteProduct = (product) => {
@@ -191,17 +238,13 @@ const Table = () => {
     const leftToolbarTemplate = () => {
         return (
             <div className="flex flex-wrap gap-2">
-                <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} className='btn-ex'/>
-
-                <Button className="btn-dl" label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length}  />
-
-                {/* <Button className="btn-dl" label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length}  /> */}
+                <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} className='btn-ex' />
             </div>
         );
     };
- const rightToolbarTemplate = () => {
-    return <Button label="Export" icon="pi pi-upload" severity="success" onClick={exportCSV} className='btn-ex' />;
-};
+    const rightToolbarTemplate = () => {
+        return <Button label="Export" icon="pi pi-upload" severity="success" onClick={exportCSV} className='btn-ex' />;
+    };
     const imageBodyTemplate = (rowData) => {
         return <img src={`https://primefaces.org/cdn/primereact/images/product/${rowData.image}`} alt={rowData.image} className="shadow-2 border-round" style={{ width: '64px' }} />;
     };
@@ -217,8 +260,27 @@ const Table = () => {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editProduct(rowData)} />
-                <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} />
+                <Button
+                    icon="pi pi-pencil"
+                    rounded
+                    outlined
+                    className="mr-2"
+                    onClick={() => isCanEditMember && editProduct(rowData)}
+                    style={{
+                        opacity: isCanEditMember ? 1 : 0.3,
+                        pointerEvents: isCanEditMember ? 'auto' : 'none',
+                        cursor: isCanEditMember ? 'pointer' : 'default'
+                    }}
+                />
+
+                <Button
+                    icon="pi pi-trash"
+                    rounded
+                    outlined
+                    severity="danger"
+                    onClick={() => confirmDeleteProduct(rowData)}
+                    disabled={!isCanDeleteMember}
+                />
             </React.Fragment>
         );
     };
@@ -277,8 +339,8 @@ const Table = () => {
             <div className="card">
                 <Toolbar className="mb-4 custom-toolbar" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                <DataTable  className="custom-dark-table" ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                   
+                <DataTable className="custom-dark-table" ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
+
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
@@ -293,6 +355,7 @@ const Table = () => {
 
             <Dialog
                 visible={productDialog}
+                //disabled={isCanAddMember}
                 style={{ width: '32rem' }}
                 breakpoints={{ '960px': '75vw', '641px': '90vw' }}
                 header="Memberr Details"
@@ -361,6 +424,7 @@ const Table = () => {
                                     icon={perm.isPermissions ? 'pi pi-check-circle' : 'pi pi-circle-off'}
                                     className={`p-button-rounded p-button-sm me-2 ${perm.isPermissions ? 'p-button-success' : 'p-button-secondary'}`}
                                     onClick={() => {
+
                                         const updatedPermissions = [...product.AccessPermissions];
                                         updatedPermissions[index].isPermissions = !updatedPermissions[index].isPermissions;
                                         setProduct((prev) => ({

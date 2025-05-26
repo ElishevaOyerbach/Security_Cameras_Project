@@ -124,6 +124,7 @@ import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 import { set } from 'react-hook-form';
 import AxiosGetUserById from '../ControlPanel/AxiosGetUserById';
+import HasPermission from '../AddMembers/HasPermission';
 
 const UploadVideo = () => {
   const [video, setVideo] = useState(null);
@@ -156,22 +157,20 @@ const UploadVideo = () => {
   useEffect(() => {
     if (!fullUser) return;
     if (user.role === "Member") {
-      setArrPermitions(fullUser.arrPermetion || []);
+      setArrPermitions(fullUser.AccessPermissions || []);
       setAdminID(fullUser.administartorID);
     } else {
       setArrPermitions([]);
       setAdminID(fullUser._id);
     }
   }, [user, fullUser]);
-  const isButtonDisabled = (() => {
-    if (user.role !== "Member") return false;
-    if (!fullUser || !Array.isArray(fullUser.AccessPermissions)) return true;
+  const [isCanAddSecurity, setIsCanAddSecurity] = useState(false);
 
-    return !fullUser.AccessPermissions.some(
-      (perm) =>
-        perm.sortPermissions === "add security" && perm.isPermissions === true
-    );
-  })();
+  useEffect(() => {
+    const canAdd = HasPermission("add security", arrPermitions, user.role);
+    setIsCanAddSecurity(canAdd);
+  }, [arrPermitions, user.role]);
+
 
   const handleFileSelect = (event) => {
     setVideo(event.files[0]);
@@ -226,7 +225,7 @@ const UploadVideo = () => {
         mode="basic"
         customUpload
         onSelect={(e) => setVideo(e.files[0])} // <-- זה התיקון
-        disabled={isButtonDisabled}
+        disabled={!isCanAddSecurity}
         chooseLabel="בחר מצלמה"
         className="custom-upload-button"
       />
@@ -236,7 +235,7 @@ const UploadVideo = () => {
         icon="pi pi-check"
         className="p-button"
         type="submit"
-        disabled={loading || isButtonDisabled}
+        disabled={loading || !isCanAddSecurity}
         style={{
           backgroundColor: 'var(--accent-green)',
           borderColor: 'var(--accent-green)',
