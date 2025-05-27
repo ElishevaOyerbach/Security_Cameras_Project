@@ -27,7 +27,20 @@ const GetSecurity = () => {
         return;
       }
       try {
-        setFullUser(await AxiosGetUserById(user._id));
+        try {
+          const full = await AxiosGetUserById(user._id);
+          setFullUser(full);
+          const id = await AxiosGetAdministratorIdByMember(full.user._id);
+          setAdminID(id);
+        } catch (error) {
+          console.error("שגיאה בשליפת מזהה מנהל:", error);
+        }
+
+
+        console.log(">>> user:", user._id);
+        console.log(">>> user:", fullUser.user._id);
+        console.log(">>> fullUser:", fullUser);
+
         const id = await AxiosGetAdministratorIdByMember(fullUser.user._id);
         setAdminID(id);
       } catch (error) {
