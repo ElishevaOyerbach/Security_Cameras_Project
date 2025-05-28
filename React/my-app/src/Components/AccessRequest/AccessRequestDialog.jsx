@@ -25,7 +25,7 @@ const AccessRequestDialog = ({ visible, onHide, requests, onApprove, onReject })
       draggable={false}
     >
       {requests.length === 0 ? (
-        <p>אין בקשות גישה כרגע.</p>
+        <p>No access requests at the moment.</p>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {requests.map((req, idx) => {
@@ -39,7 +39,7 @@ const AccessRequestDialog = ({ visible, onHide, requests, onApprove, onReject })
               >
                 <Card
                   style={{
-                    backgroundColor: '#f0f8ff',
+                    backgroundColor: '#f5f5f5',
                     boxShadow: isOpen
                       ? '0 4px 20px rgba(0,0,0,0.15)'
                       : '0 2px 6px rgba(0,0,0,0.1)',
@@ -113,7 +113,7 @@ const AccessRequestDialog = ({ visible, onHide, requests, onApprove, onReject })
                           >
                             <FaCheck />
                           </button>
-                    
+
                         </div>
 
                         {approvedIndexes.includes(idx) && (

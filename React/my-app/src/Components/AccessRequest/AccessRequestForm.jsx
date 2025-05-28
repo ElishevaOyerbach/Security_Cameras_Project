@@ -29,34 +29,34 @@ const AccessRequestForm = ({ visible, onHide, memberId, arrPermition }) => {
   };
 
   return (
-    <Dialog header="בקשת הרשאה ממנהל" visible={visible} style={{ width: '30vw' }} onHide={onHide} modal>
+    <Dialog header="New Access Request" visible={visible} style={{ width: '30vw' }} onHide={onHide} modal>
       <div className="p-fluid">
         <div className="field">
-          <label htmlFor="accessType">בחר הרשאה</label>
+          <label htmlFor="accessType">Choose Access Type</label>
           <Dropdown
             id="accessType"
             value={accessType}
             options={arrPermition} // לא צריך מיפוי! כבר מוכנים עם label/value
             onChange={(e) => setAccessType(e.value)}
-            placeholder="בחר הרשאה"
+            placeholder="Select Access Type"
           />
 
         </div>
 
         <div className="field">
-          <label htmlFor="text">הסבר על הבקשה</label>
+          <label htmlFor="text">Explain the request</label>
           <InputTextarea
             id="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={4}
             autoResize
-            placeholder="כתוב כאן הסבר קצר"
+            placeholder="Write a brief explanation here"
           />
         </div>
 
         <Button
-          label="שלח בקשה"
+          label="Submit Request"
           icon="pi pi-send"
           onClick={handleSubmit}
           loading={loading}
