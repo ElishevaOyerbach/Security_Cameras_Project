@@ -5,19 +5,12 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-
 import SideBar from './Components/SideBar';
-// import GetSecurity from './Components/GetSecurity'; // לא בשימוש
-// import ControlPanel from './Components/ControlPanel/ControlPanel'; // לא בשימוש
-import CreatNewMember from './Components/AddMembers/CreatNewMember';
-import PeopleChart from './Components/ControlPanel/Try'
-import Dashboard from './Components/Analys/Anyles';
-import UploadVideo from './Components/UploadVideo/UploadVidea';
-import SighInAdministrator from './Components/SighInAdministrator';
-import VideoProcessingOverlay from './Components/Laoding';
 import { useDispatch } from 'react-redux';
 import { Create_User } from './Store/UserSlice';
-import MultiRecordingChart from './Components/ControlPanel/MultiAnalysFromAdmin'
+
+
+
 const LazyLogin = React.lazy(() => import('./Components/Login/Login'));
 const LazySignIn = React.lazy(() => import('./Components/SighInAdministrator'));
 const LazyHome = React.lazy(() => import('./Components/Home'));
@@ -73,7 +66,6 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
-      
     </BrowserRouter>
   );
 }

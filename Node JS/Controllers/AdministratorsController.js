@@ -4,6 +4,7 @@ const SecurityCameras = require("../Moduls/SecurityCamerasModule");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // const { sendEmail } = require('../Middleware/email'); // עדכן את הנתיב לפי מיקום הקובץ email.js
+const mongoose = require("mongoose");
 
 
 // יצירת מנהל מצלמות אבטחה חדש
@@ -243,6 +244,37 @@ async function getAllSecurityCamerasByAdministrator(req, res) {
     }
 }
 
+// קבלת 4 מצלמות האבטחה האחרונות של המנהל
+async function getLast4SecurityCamerasByAdministrator(req, res) {
+  try {
+    const { id } = req.params;
+
+    const cameras = await SecurityCameras.find({ administartorID: id })
+      .sort({ date: -1 }) // שדה מיון לפי date
+      .limit(4);
+
+    if (!cameras || cameras.length === 0) {
+      // מחזיר מערך של 4 אובייקטים ריקים
+      return res.status(200).json([{}, {}, {}, {}]);
+    }
+
+    // אם יש פחות מ-4 מצלמות, משלים עם אובייקטים ריקים
+    while (cameras.length < 4) {
+      cameras.push({});
+    }
+
+    res.status(200).json(cameras);
+  }catch (error) {
+    console.error("Error fetching security cameras:", error);
+    res.status(500).send("Failed to fetch security cameras.");
+  }
+}
+
+
+
+
+
+
 // מחיקת עובד לפי מזהה למנהל זה
 async function deleteMemberByAdministrator(req, res) {
     try {
@@ -365,8 +397,93 @@ async function getUserById(req, res) {
         res.status(500).send("Failed to retrieve user.");
     }
 }
+// POST /api/request-access
+async function requestAccessFromAdmin(req, res) {
+    try {
+        const { memberId, accessType, text } = req.body;
+
+        // שלב 1: מציאת העובד
+        const member = await Members.findById(memberId);
+        if (!member) {
+            return res.status(404).json({ message: "Member not found." });
+        }
+
+        // שלב 2: שליפת מזהה המנהל מהעובד
+        const administratorId = member.administartorID;
+        if (!administratorId) {
+            return res.status(400).json({ message: "This member has no administrator assigned." });
+        }
+
+        // שלב 3: שליפת המנהל עצמו
+        const admin = await Administrators.findById(administratorId);
+        if (!admin) {
+            return res.status(404).json({ message: "Administrator not found." });
+        }
+
+        // שלב 4: יצירת בקשה חדשה
+        const newRequest = {
+            memberId,
+            accessType,
+            text,
+            status: "Pending", // אפשר גם לא לציין, כי זה ברירת מחדל
+            dateRequested: new Date()
+        };
+
+        // שלב 5: הוספה למערך ושמירה
+        admin.arrAskForAccess.push(newRequest);
+        await admin.save();
+
+        res.status(201).json({ message: "Access request submitted successfully." });
+
+    } catch (error) {
+        console.error("Error while submitting access request:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+}
+// POST /api/approve-request
+async function approveAccessRequest(req, res) {
+  try {
+    const { memberId, accessType, dateRequested } = req.body;
+
+    // מציאת העובד
+    const member = await Members.findById(memberId);
+    if (!member) {
+      return res.status(404).json({ message: "Member not found." });
+    }
+
+    const administratorId = member.administartorID;
+    if (!administratorId) {
+      return res.status(400).json({ message: "This member has no administrator assigned." });
+    }
+
+    const admin = await Administrators.findById(administratorId);
+    if (!admin) {
+      return res.status(404).json({ message: "Administrator not found." });
+    }
+
+    // מחיקת הבקשה הספציפית מתוך המערך
+    admin.arrAskForAccess = admin.arrAskForAccess.filter(
+      (req) =>
+        !(
+          req.memberId.toString() === memberId &&
+          req.accessType === accessType &&
+          new Date(req.dateRequested).toISOString() === new Date(dateRequested).toISOString()
+        )
+    );
+
+    await admin.save();
+
+    res.status(200).json({ message: "Access request approved and removed." });
+
+  } catch (error) {
+    console.error("Error while approving access request:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+}
+
 
 module.exports = {
+    getLast4SecurityCamerasByAdministrator,
     getRecentCameraCountByAdministrator,
     getCameraCountByAdministrator,
     getMemberCountByAdministrator,
@@ -381,5 +498,7 @@ module.exports = {
     deleteMemberByAdministrator,
     getAllSecurityCamerasByAdministrator,
     updateMemberByAdministrator,
-    getUserById
+    getUserById,
+    requestAccessFromAdmin,
+    approveAccessRequest
 };

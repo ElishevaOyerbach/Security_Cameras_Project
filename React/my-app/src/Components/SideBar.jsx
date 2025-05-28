@@ -83,7 +83,7 @@ const SideBar = ({ children }) => {
 
   .main-content {
     flex: 1;
-    margin-left: 230px;
+    margin-left: 195px;
     padding: 1rem;
     transition: margin-left 0.3s ease;
     background-color: #2b2f3f;
@@ -130,12 +130,11 @@ const SideBar = ({ children }) => {
           <div>
             <div className="logo">SecurityVision</div>
             <div className="menu" onClick={() => setIsMobileOpen(false)}>
-              <Link to="/ControlPanel"><i className="pi pi-home"></i> לוח</Link>
+              <Link to="/ControlPanel"><i className="pi pi-home"></i> Control Panel</Link>
               <Link to="/GetSecurity"><i className="pi pi-video"></i> Cameras</Link>
               <Link to="/Table"><i className="pi pi-users"></i> Table Members</Link>
               <Link to="/analysis"><i className="pi pi-chart-line"></i> Analysis</Link>
-              <Link to="/storage"><i className="pi pi-server"></i> Storage</Link>
-              <Link to="/settings"><i className="pi pi-cog"></i> Settings</Link>
+<Link to="/SignIn"><i className="pi pi-user"></i> Sign in</Link>
               <Link to="/login"><i className="pi pi-sign-in"></i> Login</Link>
             </div>
           </div>

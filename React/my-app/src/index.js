@@ -7,7 +7,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'primeflex/primeflex.css';
-import { BrowserRouter } from 'react-router-dom';
 
 import 'primeflex/primeflex.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; // או ערכת נושא אחרת

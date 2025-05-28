@@ -15,6 +15,13 @@ const AdministratorsSchema = mongoose.Schema({
         sortAnalysis: { type: String },
         numberSecurityCamera: {type:mongoose.Schema.Types.ObjectId, ref:'SecurityCameras'},
         IdSecurityCamera :{type:Number}
+    }],
+        arrAskForAccess: [{
+        memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Members' },
+        status: { type: String, default: "Pending" }, // Pending, Approved, Rejected
+        dateRequested: { type: Date, default: Date.now },
+        text: { type: String, required: true },
+        accessType: { type: String, required: true } 
     }]
 }) 
 

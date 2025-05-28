@@ -1,3 +1,4 @@
+
 :root {
   --bg-main: #2b2f3f;
   --card-bg: #383c4d;
@@ -100,8 +101,57 @@
     color: #ffffff;
 }
 
+input:focus, textarea:focus, .p-inputtext:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(72, 187, 120, 0.25); /* צבע ירוק */
+    border-color: #00c170 !important;
+}
 
+.p-button:not(:disabled):hover {
+    background:#00c170 !important;
+    color: #ffffff;
+    border-color: #00c170 !important;
+}
 
+.my-green-button {
+    background-color: #00c170 !important;
+    border-color:  #00c170 !important;
+    color: white !important;
+}
 
+/* כפתור שמור – ירוק */
+.save-button {
+  background-color: #4caf50 !important;
+  border: 1px solid #4caf50 !important;
+  color: white !important;
+}
+
+/* כפתור הרשאות לבן עם מסגרת */
+.permission-button {
+  background-color: white !important;
+  border: 1px solid #ccc !important;
+  color: #333 !important;
+}
+.cancel-button {
+  background-color: white !important;
+  color: #4caf50 !important;
+  border: 1px solid #4caf50 !important;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+.permission-button {
+  border: 1px solid transparent !important;
+}
+
+.permission-button.p-button-success.p-button-outlined {
+  border: 1px solid #4caf50 !important;
+
+  color: #4caf50 !important;
+  background-color: white !important;
+}
 
 /* כפתור נבחר */

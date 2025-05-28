@@ -43,7 +43,7 @@ def analyze_video(video_path):
             break
 
         frame_count += 1
-        interval = 15  # כל 15 שניות קטע
+        interval = 5  # כל 15 שניות קטע
         segment = int(frame_count / (fps * interval))
 
         try:

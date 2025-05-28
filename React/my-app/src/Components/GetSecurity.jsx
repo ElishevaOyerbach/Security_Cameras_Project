@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import AxiosPeoplePerMinute from './Analys/AxiosPeoplePerMinute';
 import AxiosDelete from './DeleteVideo/AxiosDelete';
 import AxiosGetAdministratorIdByMember from './GetAllSecurityCameras/AxiosGetAdministratorIdByMember';
-import HasPermission from './AddMembers/HasPermission';
+import HasPermission from './AddMembers/hasPermission';
 import AxiosGetUserById from './ControlPanel/AxiosGetUserById';
 
 const GetSecurity = () => {
@@ -85,7 +85,7 @@ const GetSecurity = () => {
     const videoUrl = `http://localhost:8080/videos/${video.fileName}`;
     const { data: chartData, loading: chartLoading } = AxiosPeoplePerMinute({ recordingId: video.id });
 
-    const [isCanDeleteSecurity, setIsCanDeleteSecurity] = useState(false);
+    const [isCanDeleteSecurity, setIsCanDeleteSecurity] = useState(true);
 
     useEffect(() => {
       if (!fullUser?.user?.AccessPermissions) return;
@@ -222,8 +222,8 @@ const GetSecurity = () => {
     <div className="p-4" style={{ direction: 'rtl' }}>
       <div className="flex justify-content-between align-items-center mb-4">
         <div>
-          <div style={{ color: '#ffffff', fontWeight: 'bold', fontSize: '1.5rem' }}>מצלמות</div>
-          <div style={{ color: '#ffffff' }}>צפייה ישירה וניהול מצלמות</div>
+          <div style={{ color: '#ffffff', fontWeight: 'bold', fontSize: '1.5rem' }}>Cameras</div>
+          <div style={{ color: '#ffffff' }}>  All security cameras</div>
         </div>
         <div className="flex gap-2">
           <UploadVideo />
