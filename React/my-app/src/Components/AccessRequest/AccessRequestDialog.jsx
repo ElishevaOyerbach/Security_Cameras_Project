@@ -18,7 +18,7 @@ const AccessRequestDialog = ({ visible, onHide, requests, onApprove, onReject })
 
   return (
     <Dialog
-      header="בקשות גישה חדשות"
+      header=" new Access Requests"
       visible={visible}
       style={{ width: '45vw' }}
       onHide={onHide}
@@ -57,7 +57,7 @@ const AccessRequestDialog = ({ visible, onHide, requests, onApprove, onReject })
                     onClick={() => toggleExpand(idx)}
                   >
                     <div>
-                      <strong>סוג גישה:</strong> {req.accessType || '—'}
+                      <strong>Type Access :</strong> {req.accessType || '—'}
                     </div>
                     <Button
                       icon={isOpen ? 'pi pi-minus' : 'pi pi-plus'}
@@ -80,14 +80,14 @@ const AccessRequestDialog = ({ visible, onHide, requests, onApprove, onReject })
                         transition={{ duration: 0.3 }}
                       >
                         <div style={{ marginBottom: '0.5rem' }}>
-                          <strong>מזהה משתמש:</strong> {req.memberId || 'לא ידוע'}
+                          <strong>Member ID:</strong> {req.memberId || 'Unknown'}
                         </div>
                         <div style={{ marginBottom: '0.5rem' }}>
-                          <strong>תאריך הבקשה:</strong>{' '}
-                          {new Date(req.dateRequested).toLocaleString('he-IL') || '—'}
+                          <strong>Request Date:</strong>{' '}
+                          {new Date(req.dateRequested).toLocaleString('he-IL') || '���'}
                         </div>
                         <div style={{ marginBottom: '1rem' }}>
-                          <strong>הודעה:</strong> {req.text || '—'}
+                          <strong>Message:</strong> {req.text || '���'}
                         </div>
 
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>

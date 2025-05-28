@@ -109,12 +109,12 @@ const UploadVideo = () => {
         customUpload
         onSelect={(e) => setVideo(e.files[0])} // <-- זה התיקון
         disabled={!isCanAddSecurity}
-        chooseLabel="בחר מצלמה"
+        chooseLabel="chose video"
         className="custom-upload-button"
       />
 
       <Button
-        label={loading ? 'מעלה...' : 'העלה וידאו'}
+        label={loading ? 'upload...' : ' upload video'}
         icon="pi pi-check"
         className="p-button"
         type="submit"
