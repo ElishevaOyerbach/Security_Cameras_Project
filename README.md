@@ -206,11 +206,6 @@ Visit `http://localhost:3000` to use the app.
 
 ---
 
-## License
-
-This project is licensed under the MIT License.
-
----
 
 ## Developed by
 
