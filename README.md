@@ -198,11 +198,17 @@ Visit `http://localhost:3000` to use the app.
 
 ## Future Improvements
 
+- Real-time video stream analysis
+- Facial recognition per frame
+- Cloud storage for videos
+- Alerts for suspicious activity
+- Audit log for admin actions
 
 ---
 
 ## License
 
+This project is licensed under the MIT License.
 
 ---
 
