@@ -87,8 +87,7 @@ project-root/
 
 
 **Processing in Progress (Loading State)**  
-🖼️  
-**מסך ביניים שמציג הודעת 'טוען...' או אנימציית המתנה עד לסיום ניתוח הסרטון**
+
 
 **Final Graph Display – People per Minute**  
 
