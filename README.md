@@ -35,6 +35,30 @@ project-root/
 
 ## Technologies
 
+### Frontend (React)
+- React 19
+- Redux Toolkit
+- MUI & PrimeReact for UI
+- Axios, React Router
+- Recharts, HTML2Canvas
+- React Hook Form + Zod for validation
+
+### Backend (Node.js)
+- Express.js
+- MongoDB with Mongoose
+- JWT authentication
+- Multer for file uploads
+- Nodemailer for email verification
+- CORS, Cookie-Parser, Body-Parser
+
+### Video Processing (Python)
+- Python 3
+- Flask + Flask-CORS
+- OpenCV
+- YOLOv8 (Ultralytics)
+- NumPy, TQDM
+- Matplotlib (optional, if generating images)
+
 ---
 
 ## Screenshots
@@ -74,11 +98,76 @@ project-root/
 
 ## Installation Instructions
 
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/ElishevaOyerbach/Security_Cameras_Project.git
+cd security-cameras-project
+```
+
+### 2. Install Python Dependencies
+
+```bash
+cd python
+pip install -r requirements.txt
+```
+
+Required libraries:
+- flask
+- flask-cors
+- opencv-python
+- numpy
+- tqdm
+- ultralytics
+
+### 3. Install Node.js Server
+
+```bash
+cd ../nodejs
+npm install
+```
+
+### 4. Install React Frontend
+
+```bash
+cd ../react
+npm install
+```
 
 ---
 
 ## Running the Project
 
+### Step 1: Start Python Server
+
+```bash
+cd python
+python app.py
+```
+
+Make sure YOLOv8 model `yolov8n.pt` is available in the working directory.
+
+### Step 2: Start Node.js Server
+
+```bash
+cd ../nodejs
+npm start
+```
+
+This server handles:
+- JWT auth
+- MongoDB operations
+- Uploading video files to `uploads/`
+- Forwarding requests to the Python server
+
+### Step 3: Start React App
+
+```bash
+cd ../react
+npm start
+```
+
+Visit `http://localhost:3000` to use the app.
 
 ---
 
@@ -100,7 +189,6 @@ project-root/
 [
   { "hour": "00:00", "people": 2 },
   { "hour": "00:01", "people": 3 },
-  ...
 ]
 ```
 
