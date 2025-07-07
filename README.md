@@ -15,8 +15,6 @@ project-root/
 ├── python/    # Video processing service using YOLOv8 and Flask
 ```
 
-🖼️  
-**הוסיפי כאן תרשים מבנה של המערכת – למשל דיאגרמת זרימה של React ⇄ Node ⇄ Python**
 
 ---
 
