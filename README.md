@@ -88,10 +88,12 @@ project-root/
 
 **Processing in Progress (Loading State)**  
 
+![alt text](screenshots/צילום%20מסך%202025-07-08%20000324.png)
+
 
 **Final Graph Display – People per Minute**  
 
-![alt text](screenshots/צילום%20מסך%202025-07-07%20202112.png)
+![alt text](screenshots/צילום%20מסך%202025-07-08%20000608.png)
 
 ---
 
